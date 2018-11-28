@@ -9,7 +9,7 @@ contract ExternalPerson {
 
     address public target;
 
-    function ExternalPerson(address supplyChainAddress) public {
+    constructor(address supplyChainAddress) public {
         target = supplyChainAddress;
     }
 
@@ -41,8 +41,8 @@ contract TestSupplyChain {
     // buyItem
 
     // test for failure if user does not send enough funds
-    function testUserDoesNotSendEnoughFunds() {
-        SupplyChain supplyChain =  SupplyChain(DeployedAddresses.SupplyChain());
+    function testUserDoesNotSendEnoughFunds() public {
+        SupplyChain supplyChain = SupplyChain(DeployedAddresses.SupplyChain());
         supplyChain.addItem("banana", 4 finney);
 
         ExternalPerson extPerson = new ExternalPerson(supplyChain);
@@ -54,7 +54,7 @@ contract TestSupplyChain {
     }
 
     // test for purchasing an item that is not for Sale
-    function testItemIsNotForSale() {
+    function testItemIsNotForSale() public {
         SupplyChain supplyChain = SupplyChain(DeployedAddresses.SupplyChain());
         supplyChain.addItem("kiwi", 4 finney);
         supplyChain.buyItem.value(5 finney)(1);
@@ -67,7 +67,7 @@ contract TestSupplyChain {
     // shipItem
 
     // test for calls that are made by not the seller
-    function testShipItemIsCalledByNotSeller() {
+    function testShipItemIsCalledByNotSeller() public {
         SupplyChain supplyChain = SupplyChain(DeployedAddresses.SupplyChain());
         supplyChain.addItem("melon", 4 finney);
 
@@ -81,7 +81,7 @@ contract TestSupplyChain {
     }
 
     // test for trying to ship an item that is not marked Sold
-    function testTryToShipItemThatIsNotSold() {
+    function testTryToShipItemThatIsNotSold() public {
         SupplyChain supplyChain = SupplyChain(DeployedAddresses.SupplyChain());
         supplyChain.addItem("orange", 4 finney);
         
@@ -93,7 +93,7 @@ contract TestSupplyChain {
     // receiveItem
 
     // test calling the function from an address that is not the buyer
-    function testCallReveiceItemFromTheAddressThatIsNotBuyer() {
+    function testCallReveiceItemFromTheAddressThatIsNotBuyer() public {
         SupplyChain supplyChain = SupplyChain(DeployedAddresses.SupplyChain());
         supplyChain.addItem("mango", 4 finney);
         supplyChain.buyItem.value(5 finney)(4);
@@ -108,7 +108,7 @@ contract TestSupplyChain {
     }
 
     // test calling the function on an item not marked Shipped
-    function testTryToReveiceItemIfItemIsNotShipped() {
+    function testTryToReveiceItemIfItemIsNotShipped() public {
         SupplyChain supplyChain = SupplyChain(DeployedAddresses.SupplyChain());
         supplyChain.addItem("grape", 4 finney);
         supplyChain.buyItem.value(5 finney)(5);
